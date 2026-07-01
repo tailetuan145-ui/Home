@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +26,33 @@
         /* Links Utilities */
         a { text-decoration: none; color: inherit; }
         .hover-link:hover { color: var(--blue-color) !important; text-decoration: underline; }
+
+        /* --- TOP BAR / TRANSLATE BUTTON --- */
+        .top-bar { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .btn-translate {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1.5px solid var(--primary-color);
+            border-radius: 25px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .btn-translate:hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(11, 36, 71, 0.2);
+            transform: translateY(-2px);
+        }
+        .btn-translate svg { width: 15px; height: 15px; fill: currentColor; }
 
         /* --- KHUNG TÌM KIẾM --- */
         .search-box { display: flex; gap: 10px; margin-bottom: 25px; background: var(--card-bg); padding: 15px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
@@ -160,95 +187,71 @@
             .grid-4, .grid-3 { grid-template-columns: 1fr; }
             .hero-section { padding: 30px 20px; }
         }
-        
-        /* Custom Google Translate Dropdown */
-        #google_translate_element select {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            outline: none;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .goog-te-gadget {
-            font-family: 'Inter', sans-serif !important;
-            color: transparent !important;
-        }
-        .goog-te-gadget .goog-te-combo {
-            margin: 0;
-        }
-        .goog-te-banner-frame.skiptranslate {
-            display: none !important;
-        }
-        body {
-            top: 0px !important; 
-        }
     </style>
 </head>
 <body>
 
 <div class="dashboard-container">
 
-    <!-- BẮT ĐẦU: Nút Google Dịch -->
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-        <div id="google_translate_element"></div>
+    <!-- BẮT ĐẦU: Nút Dịch tùy chỉnh (EN/VI) -->
+    <div class="top-bar">
+        <button class="btn-translate" id="translateBtn" type="button">
+            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c1.39-2.39 3.58-4.04 6.16-4.64-.69 1.14-1.26 2.36-1.68 3.64H6.62zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+            <span id="btnText">Tiếng Việt</span>
+        </button>
     </div>
-    <!-- KẾT THÚC: Nút Google Dịch -->
+    <!-- KẾT THÚC: Nút Dịch tùy chỉnh -->
 
     <div class="search-box">
-        <input type="email" id="mail" placeholder="Nhập Email học viên để tra cứu tiến độ...">
-        <button id="btn" onclick="run()">Tra cứu</button>
+        <input type="email" id="mail" class="translatable" data-en="Please enter your email to check your progress..." data-vi="Nhập Email học viên để tra cứu tiến độ..." placeholder="Please enter your email to check your progress...">
+        <button id="btn" onclick="run()"><span id="btnSearchText" class="translatable" data-en="Search" data-vi="Tra cứu">Search</span></button>
     </div>
     <div id="msg"></div>
 
     <div class="hero-section">
-        <h1 class="hero-title">Welcome back, Cadet! 👋</h1>
-        <p class="hero-subtitle">Let's continue your learning journey in<br><strong style="color: var(--accent-color);">English for Law Enforcement.</strong></p>
-        <a class="btn-primary" href="https://sites.google.com/view/peoplespoliceuniversity/lessons/unit-2?authuser=0" target="_blank">
-            <i class="fa-solid fa-play"></i> Continue Learning
+        <h1 class="hero-title translatable" data-en="Welcome back, Cadet! 👋" data-vi="Chào mừng trở lại, Học viên! 👋">Welcome back, Cadet! 👋</h1>
+        <p class="hero-subtitle translatable" data-en="Let's continue your learning journey in<br><strong style='color: var(--accent-color);'>English for Law Enforcement</strong>" data-vi="Hãy tiếp tục hành trình học tập của đồng chí trong<br><strong style='color: var(--accent-color);'>Tiếng Anh Chuyên ngành</strong>">Let's continue your learning journey in<br><strong style="color: var(--accent-color);">English for Law Enforcement.</strong></p>
+        <a class="btn-primary" href="https://sites.google.com/view/peoplespoliceuniversity/course/unit-2?authuser=0" target="_blank">
+            <i class="fa-solid fa-play"></i> <span class="translatable" data-en="Continue Learning" data-vi="Tiếp tục học">Continue Learning</span>
         </a>
     </div>
 
     <div class="grid-4">
-        <a href="#thay-link-course-overview" class="card clickable" target="_blank">
+        <a href="https://sites.google.com/view/peoplespoliceuniversity/course?authuser=0" class="card clickable" target="_blank">
             <div class="card-header">
                 <div class="icon-box" style="background: #eff6ff; color: var(--blue-color);"><i class="fa-solid fa-map"></i></div> 
-                Course at a Glance
+                <span class="translatable" data-en="Course at a Glance" data-vi="Tổng quan Khóa học">Course at a Glance</span>
             </div>
             <ul class="glance-list">
-                <li><i class="fa-solid fa-layer-group"></i> <strong>12 Units</strong></li>
-                <li><i class="fa-solid fa-shapes"></i> <strong>60+ Learning Activities</strong></li>
-                <li><i class="fa-solid fa-photo-film"></i> Videos • Flashcard • Quizzes</li>
-                <li><i class="fa-solid fa-user-clock"></i> Self-paced Learning</li>
+                <li><i class="fa-solid fa-layer-group"></i> <strong class="translatable" data-en="12 Units" data-vi="12 Bài học">12 Units</strong></li>
+                <li><i class="fa-solid fa-shapes"></i> <strong class="translatable" data-en="60+ Learning Activities" data-vi="Hơn 60 Hoạt động học tập">60+ Learning Activities</strong></li>
+                <li><i class="fa-solid fa-photo-film"></i> <span class="translatable" data-en="Videos • Flashcard • Quizzes" data-vi="Video • Thẻ từ vựng • Bài kiểm tra">Videos • Flashcard • Quizzes</span></li>
+                <li><i class="fa-solid fa-user-clock"></i> <span class="translatable" data-en="Self-paced Learning" data-vi="Học theo tốc độ riêng">Self-paced Learning</span></li>
             </ul>
             <i class="fa-solid fa-book-open glance-bg-icon bg-icon"></i>
         </a>
         
-        <a href="https://sites.google.com/view/peoplespoliceuniversity/lessons/unit-2/alpha" class="card clickable" target="_blank">
+        <a href="https://sites.google.com/view/peoplespoliceuniversity/course/unit-2?authuser=0" class="card clickable" target="_blank">
             <div class="card-header">
                 <div class="icon-box" style="background: #eff6ff; color: var(--blue-color);"><i class="fa-solid fa-play"></i></div>
-                Continue Learning
+                <span class="translatable" data-en="Continue Learning" data-vi="Tiếp tục học">Continue Learning</span>
             </div>
-            <div style="font-weight: 700; color: var(--blue-color); font-size: 13px; margin-top: 5px;">Unit 2: Traffic and Vehicles</div>
-            <div class="card-desc" style="margin-top: 4px; font-weight: 500; color: var(--text-main);">Alpha: Is This Your Vehicle?</div>
+            <div class="translatable" style="font-weight: 700; color: var(--blue-color); font-size: 13px; margin-top: 5px;" data-en="Unit 2: Traffic and Vehicles" data-vi="Bài 2: Giao thông và Phương tiện">Unit 2: Traffic and Vehicles</div>
+            <div class="card-desc translatable" style="margin-top: 4px; font-weight: 500; color: var(--text-main);" data-en="Alpha: Is This Your Vehicle?" data-vi="Alpha: Đây có phải là xe của đồng chí?">Alpha: Is This Your Vehicle?</div>
             
             <div style="margin-top: auto;">
                 <div class="track"><div class="fill" id="bar" style="width: 65%;"></div></div>
-                <div class="card-desc" id="pct" style="text-align:right; font-weight:700; color:var(--text-main);">65% completed</div>
+                <div class="card-desc" style="text-align:right; font-weight:700; color:var(--text-main);"><span id="pct-num">65%</span> <span id="pct-label" class="translatable" data-en="completed" data-vi="hoàn thành">completed</span></div>
             </div>
         </a>
         
         <a href="#thay-link-learning-time" class="card clickable" target="_blank">
             <div class="card-header">
                 <div class="icon-box" style="background: #f8fafc; color: var(--text-muted);"><i class="fa-regular fa-clock"></i></div>
-                Learning Time
+                <span class="translatable" data-en="Learning Time" data-vi="Thời gian học tập">Learning Time</span>
             </div>
             <div class="card-val">2h 45m</div>
-            <div class="card-desc">This week</div>
+            <div class="card-desc translatable" data-en="This week" data-vi="Tuần này">This week</div>
             
             <div class="mini-chart">
                 <div class="mini-bar" style="height: 40%;"></div>
@@ -260,17 +263,17 @@
                 <div class="mini-bar" style="height: 20%;"></div>
             </div>
             <div class="chart-labels">
-                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                <span class="translatable" data-en="Mon" data-vi="T2">Mon</span><span class="translatable" data-en="Tue" data-vi="T3">Tue</span><span class="translatable" data-en="Wed" data-vi="T4">Wed</span><span class="translatable" data-en="Thu" data-vi="T5">Thu</span><span class="translatable" data-en="Fri" data-vi="T6">Fri</span><span class="translatable" data-en="Sat" data-vi="T7">Sat</span><span class="translatable" data-en="Sun" data-vi="CN">Sun</span>
             </div>
         </a>
         
         <a href="#thay-link-learning-streak" class="card clickable" target="_blank">
             <div class="card-header">
                 <div class="icon-box" style="background: #fef2f2; color: #ef4444;"><i class="fa-solid fa-fire"></i></div>
-                Learning Streak
+                <span class="translatable" data-en="Learning Streak" data-vi="Chuỗi ngày học">Learning Streak</span>
             </div>
-            <div class="card-val"><span id="str">7</span> days</div>
-            <div class="card-desc">Keep it up!</div>
+            <div class="card-val"><span id="str">7</span> <span id="days-label" class="translatable" data-en="days" data-vi="ngày">days</span></div>
+            <div class="card-desc translatable" data-en="Keep it up!" data-vi="Cố gắng duy trì nhé!">Keep it up!</div>
             
             <div style="display: flex; gap: 8px; margin-top: auto; padding-top: 15px; color: #ef4444; font-size: 16px;">
                 <i class="fa-solid fa-fire"></i>
@@ -286,67 +289,67 @@
 
     <div class="grid-2">
         <div class="card">
-            <div class="section-title">Learning Pathway</div>
+            <div class="section-title translatable" data-en="Learning Pathway" data-vi="Lộ trình học tập">Learning Pathway</div>
             <div class="pathway-container">
                 <div class="pathway-line"><div class="progress"></div></div>
                 
-                <a href="#thay-link-welcome" class="pathway-step" target="_blank">
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/home/welcome?authuser=0" class="pathway-step" target="_blank">
                     <div class="step-circle done"><i class="fa-solid fa-check"></i></div>
-                    <div class="step-text">Welcome</div>
+                    <div class="step-text translatable" data-en="Welcome" data-vi="Chào mừng">Welcome</div>
                 </a>
-                <a href="#thay-link-prepare" class="pathway-step" target="_blank">
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/prepare-for-learning?authuser=0" class="pathway-step" target="_blank">
                     <div class="step-circle done"><i class="fa-solid fa-check"></i></div>
-                    <div class="step-text">Prepare for<br>Learning</div>
+                    <div class="step-text translatable" data-en="Prepare for<br>Learning" data-vi="Chuẩn bị<br>học tập">Prepare for<br>Learning</div>
                 </a>
-                <a href="#thay-link-course-unit" class="pathway-step" target="_blank">
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/course/unit-2?authuser=0" class="pathway-step" target="_blank">
                     <div class="step-circle active"><i class="fa-solid fa-book-open"></i></div>
-                    <div class="step-text">Course<br>Unit</div>
+                    <div class="step-text translatable" data-en="Course<br>Unit" data-vi="Bài<br>học">Course<br>Unit</div>
                 </a>
-                <a href="#thay-link-assessment" class="pathway-step" target="_blank">
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/assessment?authuser=0" class="pathway-step" target="_blank">
                     <div class="step-circle todo"><i class="fa-solid fa-clipboard-list"></i></div>
-                    <div class="step-text">Assessment</div>
+                    <div class="step-text translatable" data-en="Assessment" data-vi="Đánh giá">Assessment</div>
                 </a>
-                <a href="#thay-link-community" class="pathway-step" target="_blank">
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/community?authuser=0" class="pathway-step" target="_blank">
                     <div class="step-circle todo"><i class="fa-regular fa-comments"></i></div>
-                    <div class="step-text">Community</div>
+                    <div class="step-text translatable" data-en="Community" data-vi="Cộng đồng">Community</div>
                 </a>
                 <a href="#thay-link-goals" class="pathway-step" target="_blank">
                     <div class="step-circle goal"><i class="fa-solid fa-trophy"></i></div>
-                    <div class="step-text">Achieve<br>Your Goals</div>
+                    <div class="step-text translatable" data-en="Achieve<br>Your Goals" data-vi="Đạt<br>Mục tiêu">Achieve<br>Your Goals</div>
                 </a>
             </div>
-            <a href="#thay-link-full-pathway" class="link-text text-center" style="margin-top: 10px;" target="_blank">View Full Pathway &rarr;</a>
+            <a href="https://sites.google.com/view/peoplespoliceuniversity/home/learning-pathway?authuser=0" class="link-text text-center translatable" data-en="View Full Pathway &rarr;" data-vi="Xem toàn bộ lộ trình &rarr;" style="margin-top: 10px;" target="_blank">View Full Pathway &rarr;</a>
         </div>
 
         <div class="card">
             <div class="section-title">
-                Latest Announcements
-                <a href="#thay-link-all-announcements" class="link-text" style="font-size: 0.75rem; font-weight: normal;" target="_blank">View all</a>
+                <span class="translatable" data-en="Latest Announcements" data-vi="Thông báo mới nhất">Latest Announcements</span>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/home/latest-announcements?authuser=0" class="link-text translatable" data-en="View all" data-vi="Xem tất cả" style="font-size: 0.75rem; font-weight: normal;" target="_blank">View all</a>
             </div>
             <ul class="announce-list">
                 <li class="announce-item">
                     <div class="a-icon"><i class="fa-solid fa-bullhorn"></i></div>
                     <div class="a-content">
-                        <a href="#thay-link-unit3-materials" class="hover-link" target="_blank"><h4>Unit 3 Materials are now available!</h4></a>
-                        <p>Check out the new lessons, videos and worksheets.</p>
+                        <a href="#thay-link-unit3-materials" class="hover-link" target="_blank"><h4 class="translatable" data-en="Unit 3 Materials are now available!" data-vi="Tài liệu Bài 3 đã sẵn sàng!">Unit 3 Materials are now available!</h4></a>
+                        <p class="translatable" data-en="Check out the new lessons, videos and worksheets." data-vi="Khám phá bài học, video và phiếu học tập mới.">Check out the new lessons, videos and worksheets.</p>
                     </div>
-                    <div class="a-date">May 20, 2025</div>
+                    <div class="a-date translatable" data-en="May 20, 2025" data-vi="20/05/2025">May 20, 2025</div>
                 </li>
                 <li class="announce-item">
                     <div class="a-icon red"><i class="fa-solid fa-video"></i></div>
                     <div class="a-content">
-                        <a href="#thay-link-live-session" class="hover-link" target="_blank"><h4>Live Session this Saturday</h4></a>
-                        <p>Join our live discussion about Unit 3.</p>
+                        <a href="#thay-link-live-session" class="hover-link" target="_blank"><h4 class="translatable" data-en="Live Session this Saturday" data-vi="Buổi học trực tuyến vào Thứ Bảy này">Live Session this Saturday</h4></a>
+                        <p class="translatable" data-en="Join our live discussion about Unit 3." data-vi="Tham gia thảo luận trực tiếp về Bài 3.">Join our live discussion about Unit 3.</p>
                     </div>
-                    <div class="a-date">May 18, 2025</div>
+                    <div class="a-date translatable" data-en="May 18, 2025" data-vi="18/05/2025">May 18, 2025</div>
                 </li>
                 <li class="announce-item">
                     <div class="a-icon red"><i class="fa-solid fa-key"></i></div>
                     <div class="a-content">
-                        <a href="#thay-link-alpha-quiz" class="hover-link" target="_blank"><h4>Alpha Quiz will open soon</h4></a>
-                        <p>Prepare yourself! The quiz opens on May 25.</p>
+                        <a href="#thay-link-alpha-quiz" class="hover-link" target="_blank"><h4 class="translatable" data-en="Alpha Quiz will open soon" data-vi="Bài kiểm tra Alpha sắp mở">Alpha Quiz will open soon</h4></a>
+                        <p class="translatable" data-en="Prepare yourself! The quiz opens on May 25." data-vi="Hãy chuẩn bị! Bài kiểm tra mở vào ngày 25/5.">Prepare yourself! The quiz opens on May 25.</p>
                     </div>
-                    <div class="a-date">May 17, 2025</div>
+                    <div class="a-date translatable" data-en="May 17, 2025" data-vi="17/05/2025">May 17, 2025</div>
                 </li>
             </ul>
         </div>
@@ -354,128 +357,124 @@
 
     <div class="grid-3">
         <div class="card">
-            <div class="section-title">Quick Navigation</div>
+            <div class="section-title translatable" data-en="Quick Navigation" data-vi="Điều hướng nhanh">Quick Navigation</div>
             <div class="quick-nav-grid">
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/lessons?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-folder-open"></i><span class="nav-text">Units</span></a>
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/videos?authuser=0" target="_blank" class="nav-card"><i class="fa-brands fa-youtube"></i><span class="nav-text">Videos</span></a>
-                <a href="http://sites.google.com/view/peoplespoliceuniversity/learning-resources/interactive-worksheets?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-file-lines"></i><span class="nav-text">Worksheets</span></a>
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/flashcard?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-layer-group" style="color: #22c55e;"></i><span class="nav-text">Flashcard</span></a>
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/visual-resources/mind-maps?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-network-wired" style="color: #3b82f6;"></i><span class="nav-text">Mind Maps</span></a>
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/word-bank?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-book" style="color: #6366f1;"></i><span class="nav-text">Vocab Bank</span></a>
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/assessment/unit-quizzes?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-pen-to-square" style="color: #f59e0b;"></i><span class="nav-text">Quizzes</span></a>
-                <a href="https://sites.google.com/view/peoplespoliceuniversity/community/discussion-forum?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-comments" style="color: #64748b;"></i><span class="nav-text">Forum</span></a>
-                <a href="#thay-link-ai" target="_blank" class="nav-card"><i class="fa-solid fa-robot" style="color: #ec4899;"></i><span class="nav-text">AI Assistant</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/course?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-folder-open"></i><span class="nav-text translatable" data-en="Units" data-vi="Bài học">Units</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/video?authuser=0" target="_blank" class="nav-card"><i class="fa-brands fa-youtube"></i><span class="nav-text translatable" data-en="Video" data-vi="Video">Video</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/interactive-worksheet?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-file-lines"></i><span class="nav-text translatable" data-en="Worksheets" data-vi="Phiếu học tập">Worksheets</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/flashcard?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-layer-group" style="color: #22c55e;"></i><span class="nav-text translatable" data-en="Flashcard" data-vi="Thẻ từ vựng">Flashcard</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/mindmap?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-network-wired" style="color: #3b82f6;"></i><span class="nav-text translatable" data-en="MindMap" data-vi="Sơ đồ tư duy">MindMap</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/word-bank?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-book" style="color: #6366f1;"></i><span class="nav-text translatable" data-en="Vocab Bank" data-vi="Ngân hàng từ vựng">Vocab Bank</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/assessment?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-pen-to-square" style="color: #f59e0b;"></i><span class="nav-text translatable" data-en="Quizzes" data-vi="Bài kiểm tra">Quizzes</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/community/discussion-forum?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-comments" style="color: #64748b;"></i><span class="nav-text translatable" data-en="Forum" data-vi="Diễn đàn">Forum</span></a>
+                <a href="https://sites.google.com/view/peoplespoliceuniversity/support/chatbot?authuser=0" target="_blank" class="nav-card"><i class="fa-solid fa-robot" style="color: #ec4899;"></i><span class="nav-text translatable" data-en="AI Study" data-vi="AI Study">AI Study</span></a>
             </div>
-            <a href="#thay-link-all-resources" class="link-text text-center" target="_blank">Go to All Resources &rarr;</a>
+            <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources?authuser=0" class="link-text text-center translatable" data-en="Go to All Resources &rarr;" data-vi="Đến tất cả tài nguyên &rarr;" target="_blank">Go to All Resources &rarr;</a>
         </div>
 
         <div class="card">
-            <div class="section-title">Learning Progress</div>
+            <div class="section-title translatable" data-en="Learning Progress" data-vi="Tiến độ học tập">Learning Progress</div>
             
             <div style="margin-bottom: 15px;">
                 <div style="display:flex; justify-content:space-between; font-size: 0.8rem; margin-bottom: 5px; font-weight: 600;">
-                    <span>Overall Progress</span><span>65%</span>
+                    <span class="translatable" data-en="Overall Progress" data-vi="Tiến độ tổng thể">Overall Progress</span><span>65%</span>
                 </div>
                 <div class="prog-track" style="height: 8px;"><div class="prog-fill" style="width: 65%; background: var(--success-color);"></div></div>
             </div>
             
             <div style="display: flex; gap: 20px; align-items: center; margin-top: 15px;">
                 <div class="progress-bars-container">
-                    <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 5px;">By Unit</div>
+                    <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 5px;" class="translatable" data-en="By Unit" data-vi="Theo từng Bài">By Unit</div>
                     <a href="#thay-link-unit1" class="prog-row" target="_blank">
-                        <span class="prog-label">Unit 1</span>
+                        <span class="prog-label translatable" data-en="Unit 1" data-vi="Bài 1">Unit 1</span>
                         <div class="prog-track"><div class="prog-fill" style="width: 100%; background: var(--success-color);"></div></div>
                         <span class="prog-pct">100%</span>
                     </a>
                     <a href="#thay-link-unit2" class="prog-row" target="_blank">
-                        <span class="prog-label">Unit 2</span>
+                        <span class="prog-label translatable" data-en="Unit 2" data-vi="Bài 2">Unit 2</span>
                         <div class="prog-track"><div class="prog-fill" style="width: 80%; background: var(--blue-color);"></div></div>
                         <span class="prog-pct">80%</span>
                     </a>
                     <a href="#thay-link-unit3" class="prog-row" target="_blank">
-                        <span class="prog-label">Unit 3</span>
+                        <span class="prog-label translatable" data-en="Unit 3" data-vi="Bài 3">Unit 3</span>
                         <div class="prog-track"><div class="prog-fill" style="width: 65%; background: var(--accent-color);"></div></div>
                         <span class="prog-pct">65%</span>
                     </a>
                     <a href="#thay-link-unit4" class="prog-row" target="_blank">
-                        <span class="prog-label">Unit 4</span>
+                        <span class="prog-label translatable" data-en="Unit 4" data-vi="Bài 4">Unit 4</span>
                         <div class="prog-track"><div class="prog-fill" style="width: 30%; background: var(--text-muted);"></div></div>
                         <span class="prog-pct">30%</span>
                     </a>
                 </div>
                 
                 <div class="circular-progress">
-                    <div class="circular-inner">65%<span>Overall</span></div>
+                    <div class="circular-inner">65%<span class="translatable" data-en="Overall" data-vi="Tổng thể">Overall</span></div>
                 </div>
             </div>
             
-            <a href="#thay-link-detailed-progress" class="link-text text-center" style="margin-top: 20px;" target="_blank">View Detailed Progress &rarr;</a>
+            <a href="#thay-link-detailed-progress" class="link-text text-center translatable" data-en="View Detailed Progress &rarr;" data-vi="Xem chi tiết tiến độ &rarr;" style="margin-top: 20px;" target="_blank">View Detailed Progress &rarr;</a>
         </div>
 
         <div class="card">
             <div class="section-title">
-                Upcoming Tasks
-                <a href="#thay-link-calendar" class="link-text" style="font-size: 0.75rem; font-weight: normal;" target="_blank">View calendar</a>
+                <span class="translatable" data-en="Upcoming Tasks" data-vi="Nhiệm vụ sắp tới">Upcoming Tasks</span>
+                <a href="#thay-link-calendar" class="link-text translatable" data-en="View calendar" data-vi="Xem lịch" style="font-size: 0.75rem; font-weight: normal;" target="_blank">View calendar</a>
             </div>
             
             <a href="#thay-link-task1" class="task-item" target="_blank">
-                <div class="task-date"><div class="task-month">May</div><div class="task-day">21</div></div>
+                <div class="task-date"><div class="task-month translatable" data-en="May" data-vi="Th5">May</div><div class="task-day">21</div></div>
                 <div class="task-content">
-                    <h4 class="hover-link">Worksheet: Daily Activities</h4>
-                    <p>Unit 3</p>
+                    <h4 class="hover-link translatable" data-en="Worksheet: Daily Activities" data-vi="Phiếu học tập: Hoạt động hàng ngày">Worksheet: Daily Activities</h4>
+                    <p class="translatable" data-en="Unit 3" data-vi="Bài 3">Unit 3</p>
                 </div>
-                <div class="task-due" style="color: #ef4444;">Due in 2 days</div>
+                <div class="task-due translatable" data-en="Due in 2 days" data-vi="Còn 2 ngày" style="color: #ef4444;">Due in 2 days</div>
             </a>
             
             <a href="#thay-link-task2" class="task-item" target="_blank">
-                <div class="task-date"><div class="task-month">May</div><div class="task-day">24</div></div>
+                <div class="task-date"><div class="task-month translatable" data-en="May" data-vi="Th5">May</div><div class="task-day">24</div></div>
                 <div class="task-content">
-                    <h4 class="hover-link">Unit 3 Quiz</h4>
-                    <p>Unit 3</p>
+                    <h4 class="hover-link translatable" data-en="Unit 3 Quiz" data-vi="Bài kiểm tra Bài 3">Unit 3 Quiz</h4>
+                    <p class="translatable" data-en="Unit 3" data-vi="Bài 3">Unit 3</p>
                 </div>
-                <div class="task-due" style="color: #f59e0b;">Due in 5 days</div>
+                <div class="task-due translatable" data-en="Due in 5 days" data-vi="Còn 5 ngày" style="color: #f59e0b;">Due in 5 days</div>
             </a>
             
             <a href="#thay-link-task3" class="task-item" target="_blank">
-                <div class="task-date"><div class="task-month">May</div><div class="task-day">27</div></div>
+                <div class="task-date"><div class="task-month translatable" data-en="May" data-vi="Th5">May</div><div class="task-day">27</div></div>
                 <div class="task-content">
-                    <h4 class="hover-link">Alpha Quiz</h4>
-                    <p>All Units</p>
+                    <h4 class="hover-link translatable" data-en="Alpha Quiz" data-vi="Bài kiểm tra Alpha">Alpha Quiz</h4>
+                    <p class="translatable" data-en="All Units" data-vi="Tất cả các Bài">All Units</p>
                 </div>
-                <div class="task-due" style="color: var(--text-muted);">Due in 8 days</div>
+                <div class="task-due translatable" data-en="Due in 8 days" data-vi="Còn 8 ngày" style="color: var(--text-muted);">Due in 8 days</div>
             </a>
             
-            <a href="#thay-link-all-tasks" class="link-text text-center" style="margin-top: auto;" target="_blank">See All Tasks &rarr;</a>
+            <a href="#thay-link-all-tasks" class="link-text text-center translatable" data-en="See All Tasks &rarr;" data-vi="Xem tất cả nhiệm vụ &rarr;" style="margin-top: auto;" target="_blank">See All Tasks &rarr;</a>
         </div>
     </div>
 
     <div class="section-title" style="margin-top: 10px;">
-        <span style="font-size: 1.1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-star" style="color: var(--accent-color);"></i> Featured Resources</span>
+        <span style="font-size: 1.1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-star" style="color: var(--accent-color);"></i> <span class="translatable" data-en="Featured Resources" data-vi="Tài nguyên nổi bật">Featured Resources</span></span>
     </div>
     <div class="resources-grid">
         <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/flashcard?authuser=0" class="resource-card" target="_blank">
             <div class="r-icon" style="color: #22c55e;"><i class="fa-solid fa-layer-group"></i></div>
-            <div class="r-content"><h4>Flashcard</h4><p>Review key vocabulary with spaced repetition.</p></div>
+            <div class="r-content"><h4 class="translatable" data-en="Flashcard" data-vi="Thẻ từ vựng">Flashcard</h4><p class="translatable" data-en="Review key vocabulary with spaced repetition." data-vi="Ôn tập từ vựng quan trọng theo phương pháp lặp lại ngắt quãng.">Review key vocabulary with spaced repetition.</p></div>
         </a>
-        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/visual-resources/mind-maps?authuser=0" class="resource-card" target="_blank">
+        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/mindmap?authuser=0" class="resource-card" target="_blank">
             <div class="r-icon" style="color: #3b82f6;"><i class="fa-solid fa-network-wired"></i></div>
-            <div class="r-content"><h4>Mind Map: Unit 2</h4><p>Visual summary of key concepts.</p></div>
+            <div class="r-content"><h4 class="translatable" data-en="MindMap" data-vi="Sơ đồ tư duy">MindMap</h4><p class="translatable" data-en="Visual summary of key concepts." data-vi="Tóm tắt trực quan các khái niệm chính.">Visual summary of key concepts.</p></div>
         </a>
-        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/grammar-bank?authuser=0" class="resource-card" target="_blank">
-            <div class="r-icon" style="color: #6366f1;"><i class="fa-solid fa-book"></i></div>
-            <div class="r-content"><h4>Grammar Bank</h4><p>Essential grammar explanations & practice.</p></div>
-        </a>
-        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/videos?authuser=0" class="resource-card" target="_blank">
+        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/video?authuser=0" class="resource-card" target="_blank">
             <div class="r-icon" style="color: #0ea5e9;"><i class="fa-solid fa-circle-play"></i></div>
-            <div class="r-content"><h4>Video: Traffic Offences</h4><p>Watch the video lesson and take notes.</p></div>
+            <div class="r-content"><h4 class="translatable" data-en="Video" data-vi="Video">Video</h4><p class="translatable" data-en="Watch the video lesson and take notes." data-vi="Xem video bài giảng và ghi chú.">Watch the video lesson and take notes.</p></div>
         </a>
-        <a href="#thay-link-fr-ai" class="resource-card" target="_blank">
+        <a href="https://sites.google.com/view/peoplespoliceuniversity/support/chatbot?authuser=0" class="resource-card" target="_blank">
             <div class="r-icon" style="color: #ec4899;"><i class="fa-solid fa-robot"></i></div>
-            <div class="r-content"><h4>AI Study Assistant</h4><p>Ask questions and get instant help.</p></div>
+            <div class="r-content"><h4 class="translatable" data-en="AI Study" data-vi="AI Study">AI Study</h4><p class="translatable" data-en="Ask questions and get instant help." data-vi="Đặt câu hỏi và nhận hỗ trợ ngay lập tức.">Ask questions and get instant help.</p></div>
         </a>
-        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/additional-readings?authuser=0" class="resource-card" target="_blank">
+        <a href="https://sites.google.com/view/peoplespoliceuniversity/learning-resources/additional-reading?authuser=0" class="resource-card" target="_blank">
             <div class="r-icon" style="color: #64748b;"><i class="fa-solid fa-file-lines"></i></div>
-            <div class="r-content"><h4>Additional Readings</h4><p>Read articles and test your knowledge.</p></div>
+            <div class="r-content"><h4 class="translatable" data-en="Additional Reading" data-vi="Bài đọc thêm">Additional Reading</h4><p class="translatable" data-en="Read articles and test your knowledge." data-vi="Đọc bài viết và kiểm tra kiến thức.">Read articles and test your knowledge.</p></div>
         </a>
     </div>
 
@@ -484,52 +483,90 @@
 <script>
     // CHỨC NĂNG GỌI DỮ LIỆU TỪ EXCEL VỀ WEB
     const URL = "https://script.google.com/macros/s/AKfycbzLDaXJ-rnhg1n6fQVvrOeCFswZjScF0k7fJpEzUbVZ7RC0RZ_iPP6QYRXOCJhW-6v2/exec";
-    
+
+    // Ngôn ngữ hiện tại, đồng bộ với nút Dịch
+    let currentLang = 'en';
+
+    // Chuỗi thông báo động theo ngôn ngữ
+    const messages = {
+        en: {
+            emptyEmail: "Please enter an email address!",
+            noData: "No learning data found for this email, or the email is incorrect.",
+            serverError: "An error occurred while connecting to the server!",
+            searching: "Searching...",
+            search: "Search"
+        },
+        vi: {
+            emptyEmail: "Đồng chí vui lòng nhập địa chỉ Email!",
+            noData: "Email chưa có dữ liệu học tập hoặc nhập chưa chính xác.",
+            serverError: "Có lỗi xảy ra khi kết nối máy chủ!",
+            searching: "Đang tải...",
+            search: "Tra cứu"
+        }
+    };
+
     function run() {
         let m = document.getElementById("mail").value.trim();
         let msgBox = document.getElementById("msg");
         if(!m) { 
-            msgBox.innerText = "Đồng chí vui lòng nhập địa chỉ Email!"; 
+            msgBox.innerText = messages[currentLang].emptyEmail; 
             msgBox.style.display = "block"; 
             return; 
         }
         
-        document.getElementById("btn").innerText = "Đang tải...";
+        document.getElementById("btnSearchText").innerText = messages[currentLang].searching;
         msgBox.style.display = "none";
         
         fetch(URL + "?email=" + encodeURIComponent(m))
         .then(r => r.json())
         .then(d => {
-            document.getElementById("btn").innerText = "Tra cứu";
+            document.getElementById("btnSearchText").innerText = messages[currentLang].search;
             setTimeout(() => { document.getElementById("bar").style.width = d.progress; }, 100);
-            document.getElementById("pct").innerText = d.progress + " completed";
+            document.getElementById("pct-num").innerText = d.progress;
             document.getElementById("str").innerText = d.streak;
             
             if (d.progress === "0%" && d.streak == 0) { 
-                msgBox.innerText = "Email chưa có dữ liệu học tập hoặc nhập chưa chính xác."; 
+                msgBox.innerText = messages[currentLang].noData; 
                 msgBox.style.display = "block";
             }
         })
         .catch(err => {
-            document.getElementById("btn").innerText = "Tra cứu";
-            msgBox.innerText = "Có lỗi xảy ra khi kết nối máy chủ!";
+            document.getElementById("btnSearchText").innerText = messages[currentLang].search;
+            msgBox.innerText = messages[currentLang].serverError;
             msgBox.style.display = "block";
         });
     }
 
-    // --- BẮT ĐẦU: CẤU HÌNH GOOGLE TRANSLATE ---
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'vi,en',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_element');
-    }
-    // --- KẾT THÚC: CẤU HÌNH GOOGLE TRANSLATE ---
-</script>
+    // --- NÚT DỊCH TÙY CHỈNH (EN <-> VI), thay thế Google Translate widget ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const translateBtn = document.getElementById('translateBtn');
+        const btnText = document.getElementById('btnText');
+        const translatableElements = document.querySelectorAll('.translatable');
 
-<!-- Script thư viện của Google Dịch -->
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        translateBtn.addEventListener('click', function() {
+            // Đảo ngôn ngữ
+            currentLang = (currentLang === 'en') ? 'vi' : 'en';
+
+            // Nhãn nút hiển thị ngôn ngữ có thể chuyển sang
+            btnText.innerText = (currentLang === 'en') ? 'Tiếng Việt' : 'English';
+
+            // Cập nhật html lang attribute
+            document.documentElement.lang = currentLang;
+
+            // Cập nhật toàn bộ nội dung có thể dịch
+            translatableElements.forEach(function(el) {
+                const value = el.getAttribute('data-' + currentLang);
+                if (value !== null) {
+                    if (el.tagName === 'INPUT') {
+                        el.setAttribute('placeholder', value);
+                    } else {
+                        el.innerHTML = value;
+                    }
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
